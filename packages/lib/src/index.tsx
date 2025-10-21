@@ -1,7 +1,7 @@
 // import noop from '@jswork/noop';
 import cx from 'classnames';
 import React, { Component } from 'react';
-import { Card, CardProps } from 'antd';
+import { Card, CardProps, TableProps } from 'antd';
 import { AcTableMain } from '@jswork/antd-components';
 
 const CLASS_NAME = 'react-ant-resource-list';
@@ -12,6 +12,7 @@ export type ReactAntResourceListProps = CardProps & {
   dataPath?: string;
   totalPath?: string;
   params?: any;
+  tableProps?: TableProps;
 };
 
 export default class ReactAntResourceList extends Component<ReactAntResourceListProps> {
@@ -21,11 +22,12 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
     columns: [],
     dataPath: 'rows',
     totalPath: 'total',
-    params: {},
   };
 
   render() {
-    const { className, name, columns, dataPath, totalPath, params, ...rest } = this.props;
+    const { className, name, columns, dataPath, totalPath, params, tableProps, ...rest } =
+      this.props;
+
     return (
       <Card data-component={CLASS_NAME} className={cx(CLASS_NAME, className)} {...rest}>
         <AcTableMain
@@ -34,6 +36,7 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
           dataPath={dataPath}
           totalPath={totalPath}
           params={params}
+          {...tableProps}
         />
       </Card>
     );
