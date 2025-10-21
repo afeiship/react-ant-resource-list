@@ -1,20 +1,20 @@
 {
-  "name": "react-native-alphabet-list-view",
-  "version": "0.0.1",
-  "description": "Country code select for react native",
-  "homepage": "https://github.com/afeiship/react-native-alphabet-list-view",
-  "author": {
-    "name": "afei",
-    "email": "1290657123@qq.com"
-  },
-  "main": "src/index.js",
-  "license": "MIT",
-  "dependencies": {
-    "next-js-core2": "github:afeiship/next-js-core2",
-    "noop": "github:afeiship/noop",
-    "prop-types": "^15.6.1",
-    "react": "*",
-    "react-native": "*",
-    "react-native-stylekit": "github:afeiship/react-native-stylekit"
+  "name": "react-ant-resource-list",
+  "version": "1.0.0",
+  "description": "Antd resource list.",
+  "homepage": "https://js.work",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "cd packages/example && yarn run dev",
+    "predocs": "rm -rf docs && node scripts/markdown.js",
+    "docs": "cd packages/example && yarn run build",
+    "postdocs": "cp -R packages/example/dist docs",
+    "preln:build": "yarn run docs",
+    "ln:build": "cd packages/lib && yarn run build",
+    "ln:publish": "cd packages/lib && yarn run release"
   }
 }
