@@ -1,32 +1,33 @@
 // import noop from '@jswork/noop';
 import cx from 'classnames';
-import React, { ReactNode, Component, HTMLAttributes } from "react";
+import React, { ReactNode, Component } from 'react';
+import { Card, CardProps } from 'antd';
+import { AcTableMain } from '@jswork/antd-components';
 
-const CLASS_NAME = "react-ant-resource-list";
-// const uuid = () => Math.random().toString(36).substring(2, 9);
-export type ReactAntResourceListProps = {
-  /**
-   * The extended className for component.
-   * @default ''
-   */
-  className?: string;
-  /**
-   * The children element.
-   */
-  children?: ReactNode;
-} & HTMLAttributes<HTMLDivElement>;
+const CLASS_NAME = 'react-ant-resource-list';
+
+export type ReactAntResourceListProps = CardProps & {
+  name: string;
+  columns: any[];
+};
 
 export default class ReactAntResourceList extends Component<ReactAntResourceListProps> {
   static displayName = CLASS_NAME;
-  static version = "__VERSION__";
-  static defaultProps = {};
+  static version = '__VERSION__';
+  static defaultProps = {
+    columns: [],
+  };
 
   render() {
-    const { className, children,...rest } = this.props;
+    const { className, name, columns, ...rest } = this.props;
     return (
-      <div data-component={CLASS_NAME} className={cx(CLASS_NAME, className)} {...rest}>
-        {children}
-      </div>
+      <Card
+        title="List"
+        data-component={CLASS_NAME}
+        className={cx(CLASS_NAME, className)}
+        {...rest}>
+        <AcTableMain name={name} columns={columns} />
+      </Card>
     );
   }
 }
