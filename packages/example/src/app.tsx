@@ -1,5 +1,6 @@
 import ReactAntResourceList from '@jswork/react-ant-resource-list/src/main';
 import '@jswork/react-ant-resource-list/src/style.scss';
+import { Space, Button } from 'antd';
 
 import nx from '@jswork/next';
 
