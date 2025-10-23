@@ -11,14 +11,12 @@ const useCommand = (inName?: string) => {
     ReactAntResourceList.event?.on(`${name}:${cmd}`, callback);
 
   // the command repository:
-  const reset = () => execute('reset');
   const toAdd = () => execute('toAdd');
   const toEdit = () => execute('toEdit');
 
   return {
     listen,
     execute,
-    reset,
     toAdd,
     toEdit,
   };

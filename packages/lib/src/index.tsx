@@ -43,7 +43,7 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
   static version = '__VERSION__';
   private harmonyEvents: ReactHarmonyEvents | null = null;
   static event: EventMittNamespace.EventMitt;
-  static events = ['reset', 'toAdd', 'toEdit'];
+  static events = ['toAdd', 'toEdit'];
   static defaultProps = {
     lang: 'zh-CN',
     columns: [],
@@ -60,7 +60,7 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
   get extraView() {
     return (
       <Space>
-        <Button size="small" icon={<ReloadOutlined />} onClick={this.reset}>
+        <Button size="small" icon={<ReloadOutlined />} onClick={this.handleRefresh}>
           {this.t('refresh')}
         </Button>
         <Button size="small" icon={<PlusOutlined />} onClick={this.toAdd}>
@@ -70,12 +70,12 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
     );
   }
 
-  /* ----- public eventBus methods start ----- */
-  public reset = () => {
+  private handleRefresh = () => {
     const { name } = this.props;
     nx.$event?.emit?.(`${name}:reset`);
   };
 
+  /* ----- public eventBus methods start ----- */
   public toAdd = () => {
     const { module, name } = this.props;
     nx.$nav?.(`/${module}/${name}/add`);
