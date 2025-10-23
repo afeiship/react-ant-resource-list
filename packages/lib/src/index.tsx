@@ -4,8 +4,6 @@ import React, { Component } from 'react';
 import { Button, Card, CardProps, Space } from 'antd';
 import { AcTableMain, AcTableMainProps } from '@jswork/antd-components';
 import { PlusOutlined, ReloadOutlined } from '@ant-design/icons';
-import type { EventMittNamespace } from '@jswork/event-mitt';
-import { ReactHarmonyEvents } from '@jswork/harmony-events';
 import nx from '@jswork/next';
 
 const CLASS_NAME = 'react-ant-resource-list';
@@ -41,8 +39,6 @@ const locales = {
 export default class ReactAntResourceList extends Component<ReactAntResourceListProps> {
   static displayName = CLASS_NAME;
   static version = '__VERSION__';
-  private harmonyEvents: ReactHarmonyEvents | null = null;
-  static event: EventMittNamespace.EventMitt;
   static events = ['toAdd', 'toEdit'];
   static defaultProps = {
     lang: 'zh-CN',
@@ -55,15 +51,13 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
     return locales[lang!][key] || key;
   };
 
-  public eventBus: EventMittNamespace.EventMitt = ReactAntResourceList.event;
-
   get extraView() {
     return (
       <Space>
         <Button size="small" icon={<ReloadOutlined />} onClick={this.handleRefresh}>
           {this.t('refresh')}
         </Button>
-        <Button size="small" icon={<PlusOutlined />} onClick={this.toAdd}>
+        <Button size="small" icon={<PlusOutlined />} onClick={this.handleAdd}>
           {this.t('add')}
         </Button>
       </Space>
@@ -75,27 +69,10 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
     nx.$event?.emit?.(`${name}:reset`);
   };
 
-  /* ----- public eventBus methods start ----- */
-  public toAdd = () => {
-    const { module, name } = this.props;
-    nx.$nav?.(`/${module}/${name}/add`);
+  private handleAdd = () => {
+    const { name } = this.props;
+    nx.$event?.emit?.(`${name}:toAdd`);
   };
-
-  // @ts-ignore
-  public toEdit = (item: any) => {
-    const { module, name } = this.props;
-    nx.$nav?.(`/${module}/${name}/edit/${item.id}`);
-  };
-  /* ----- public eventBus methods end ----- */
-
-  componentDidMount() {
-    this.harmonyEvents = ReactHarmonyEvents.create(this);
-    this.eventBus = ReactAntResourceList.event;
-  }
-
-  componentWillUnmount() {
-    this.harmonyEvents?.destroy();
-  }
 
   render() {
     const { className, module, name, tableProps, params, columns, ...rest } = this.props;
