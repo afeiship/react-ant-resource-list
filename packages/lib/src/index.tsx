@@ -11,8 +11,6 @@ const CLASS_NAME = 'react-ant-resource-list';
 declare global {
   interface NxStatic {
     $event: any;
-    $nav: any;
-    $api: any;
   }
 }
 
