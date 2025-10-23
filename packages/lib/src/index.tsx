@@ -72,6 +72,12 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
     nx.$nav?.(`/${module}/${name}/add`);
   };
 
+  // @ts-ignore
+  private toEdit = (item: any) => {
+    const { module, name } = this.props;
+    nx.$nav?.(`/${module}/${name}/edit/${item.id}`);
+  };
+
   render() {
     const { className, module, name, tableProps, params, columns, ...rest } = this.props;
 
