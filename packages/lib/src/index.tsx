@@ -80,7 +80,14 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
         className={cx(CLASS_NAME, className)}
         extra={this.extraView}
         {...rest}>
-        <AcTable name={name} columns={columns} params={params} {...tableProps} />
+        <AcTable
+          bordered
+          size="middle"
+          name={name}
+          columns={columns}
+          params={params}
+          {...tableProps}
+        />
       </Card>
     );
   }
