@@ -2,7 +2,7 @@
 import cx from 'classnames';
 import React, { Component } from 'react';
 import { Button, Card, CardProps, Space } from 'antd';
-import { AcTableMain, AcTableMainProps } from '@jswork/antd-components';
+import { AcTable, AcTableProps } from '@jswork/antd-components';
 import { PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import nx from '@jswork/next';
 
@@ -20,7 +20,7 @@ export type ReactAntResourceListProps = CardProps & {
   module?: string;
   columns: any[];
   params?: any;
-  tableProps?: Omit<AcTableMainProps, 'name' | 'columns' | 'params'>;
+  tableProps?: Omit<AcTableProps, 'name' | 'columns' | 'params'>;
 };
 
 const locales = {
@@ -37,7 +37,6 @@ const locales = {
 export default class ReactAntResourceList extends Component<ReactAntResourceListProps> {
   static displayName = CLASS_NAME;
   static version = '__VERSION__';
-  static events = ['toAdd', 'toEdit'];
   static defaultProps = {
     lang: 'zh-CN',
     columns: [],
@@ -69,7 +68,7 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
 
   private handleAdd = () => {
     const { name } = this.props;
-    nx.$event?.emit?.(`${name}:toAdd`);
+    nx.$event?.emit?.(`${name}:add`);
   };
 
   render() {
@@ -81,7 +80,7 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
         className={cx(CLASS_NAME, className)}
         extra={this.extraView}
         {...rest}>
-        <AcTableMain name={name} columns={columns} params={params} {...tableProps} />
+        <AcTable name={name} columns={columns} params={params} {...tableProps} />
       </Card>
     );
   }
