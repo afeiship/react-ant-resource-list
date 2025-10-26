@@ -19,6 +19,7 @@ export type ReactAntResourceListProps = CardProps & {
   columns: any[];
   params?: any;
   hasBack?: boolean;
+  actions?: string[];
   tableProps?: Omit<AcTableProps, 'name' | 'columns' | 'params'>;
 };
 
@@ -29,23 +30,19 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
     lang: 'zh-CN',
     columns: [],
     module: 'admin',
-    hasBack: false,
+    actions: ['reset', 'add'],
   };
 
-  get extraActions() {
-    const { hasBack } = this.props;
-    return hasBack ? ['reset', 'add', 'back'] : ['reset', 'add'];
-  }
-
   render() {
-    const { className, module, name, tableProps, params, columns, lang, ...rest } = this.props;
+    const { className, module, name, tableProps, params, columns, lang, actions, ...rest } =
+      this.props;
 
     return (
       <Card
         data-component={CLASS_NAME}
         className={cx(CLASS_NAME, className)}
         lang={lang}
-        extra={<AcTableExtras lang={lang} name={name} actions={this.extraActions} />}
+        extra={<AcTableExtras lang={lang} name={name} actions={actions} />}
         {...rest}>
         <AcTable
           bordered
