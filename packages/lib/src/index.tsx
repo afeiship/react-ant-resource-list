@@ -1,7 +1,7 @@
 // import noop from '@jswork/noop';
 import cx from 'classnames';
 import React, { Component } from 'react';
-import { Card, CardProps } from 'antd';
+import { Card, CardProps, TableProps } from 'antd';
 import { AcTable, AcTableExtras, AcTableProps } from '@jswork/antd-components';
 
 const CLASS_NAME = 'react-ant-resource-list';
@@ -16,7 +16,10 @@ export type ReactAntResourceListProps = CardProps & {
   name: string;
   lang?: string;
   module?: string;
-  columns: any[];
+  columns?: TableProps['columns'];
+  columnsFields?: TableProps['columns'];
+  columnsAction?: AcTableProps['columns'];
+  columnsActionParams?: Record<string, any>;
   params?: any;
   hasBack?: boolean;
   actions?: string[];
@@ -34,8 +37,20 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
   };
 
   render() {
-    const { className, module, name, tableProps, params, columns, lang, actions, ...rest } =
-      this.props;
+    const {
+      className,
+      module,
+      name,
+      tableProps,
+      params,
+      columns,
+      columnsFields,
+      columnsAction,
+      columnsActionParams,
+      lang,
+      actions,
+      ...rest
+    } = this.props;
 
     return (
       <Card
@@ -50,6 +65,9 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
           name={name}
           module={module}
           columns={columns}
+          columnsFields={columnsFields}
+          columnsAction={columnsAction}
+          columnsActionParams={columnsActionParams}
           params={params}
           {...tableProps}
         />
