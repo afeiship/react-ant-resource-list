@@ -1,6 +1,6 @@
 // import noop from '@jswork/noop';
 import cx from 'classnames';
-import React, { Component } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { Card, CardProps, TableProps } from 'antd';
 import { AcTable, AcTableExtras, AcTableProps } from '@jswork/antd-components';
 
@@ -16,6 +16,8 @@ export type ReactAntResourceListProps = CardProps & {
   name: string;
   lang?: string;
   module?: string;
+  header?: ReactNode;
+  footer?: ReactNode;
   columns?: TableProps['columns'];
   columnsFields?: TableProps['columns'];
   columnsAction?: AcTableProps['columns'];
@@ -40,6 +42,8 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
     const {
       className,
       module,
+      header,
+      footer,
       name,
       tableProps,
       params,
@@ -59,6 +63,7 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
         lang={lang}
         extra={<AcTableExtras lang={lang} name={name} actions={actions} />}
         {...rest}>
+        {header}
         <AcTable
           bordered
           size="middle"
@@ -71,6 +76,7 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
           params={params}
           {...tableProps}
         />
+        {footer}
       </Card>
     );
   }
