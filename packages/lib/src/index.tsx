@@ -52,6 +52,7 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
       header,
       footer,
       name,
+      cardExtraProps,
       tableProps,
       params,
       columns,
