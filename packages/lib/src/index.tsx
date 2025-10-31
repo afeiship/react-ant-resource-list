@@ -35,7 +35,7 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
     columns: [],
     module: 'admin',
     cardExtraProps: {
-      actions: ['add', 'refresh'],
+      actions: ['add', 'reset'],
     },
   };
 
