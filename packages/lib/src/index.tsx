@@ -1,8 +1,7 @@
-// import noop from '@jswork/noop';
 import cx from 'classnames';
 import React, { Component, ReactNode } from 'react';
 import { Card, CardProps, TableProps } from 'antd';
-import { AcTable, AcTableExtras, AcTableProps } from '@jswork/antd-components';
+import { AcCardExtras, AcCardExtrasProps, AcTable, AcTableProps } from '@jswork/antd-components';
 
 const CLASS_NAME = 'react-ant-resource-list';
 
@@ -24,7 +23,7 @@ export type ReactAntResourceListProps = CardProps & {
   columnsActionParams?: Record<string, any>;
   params?: any;
   hasBack?: boolean;
-  actions?: string[];
+  cardExtraProps?: Omit<AcCardExtrasProps, 'name' | 'lang'>;
   tableProps?: Omit<AcTableProps, 'name' | 'columns' | 'params'>;
 };
 
@@ -35,8 +34,16 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
     lang: 'zh-CN',
     columns: [],
     module: 'admin',
-    actions: ['reset', 'add'],
+    cardExtraProps: {
+      actions: ['add', 'refresh'],
+    },
   };
+
+  get extraView() {
+    const { cardExtraProps, name, lang } = this.props;
+    return <AcCardExtras name={name} lang={lang} {...cardExtraProps} />;
+  }
+
 
   render() {
     const {
@@ -61,7 +68,7 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
         data-component={CLASS_NAME}
         className={cx(CLASS_NAME, className)}
         lang={lang}
-        extra={<AcTableExtras lang={lang} name={name} actions={actions} />}
+        extra={this.extraView}
         {...rest}>
         {header}
         <AcTable
