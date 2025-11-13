@@ -22,9 +22,14 @@ export type ReactAntResourceListProps = CardProps & {
   columnsAction?: AcTableProps['columns'];
   columnsActionParams?: Record<string, any>;
   params?: any;
+  paramsAdd?: any;
+  paramsEdit?: any;
   hasBack?: boolean;
   cardExtraProps?: Omit<AcCardExtrasProps, 'name' | 'lang'>;
-  tableProps?: Omit<AcTableProps, 'name' | 'columns' | 'params'>;
+  tableProps?: Omit<
+    AcTableProps,
+    'name' | 'lang' | 'columns' | 'params' | 'paramsAdd' | 'paramsEdit'
+  >;
 };
 
 export default class ReactAntResourceList extends Component<ReactAntResourceListProps> {
@@ -44,7 +49,6 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
     return <AcCardExtras name={name} lang={lang} {...cardExtraProps} />;
   }
 
-
   render() {
     const {
       className,
@@ -55,6 +59,8 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
       cardExtraProps,
       tableProps,
       params,
+      paramsAdd,
+      paramsEdit,
       columns,
       columnsFields,
       columnsAction,
@@ -76,12 +82,15 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
           bordered
           size="middle"
           name={name}
+          lang={lang}
           module={module}
           columns={columns}
           columnsFields={columnsFields}
           columnsAction={columnsAction}
           columnsActionParams={columnsActionParams}
           params={params}
+          paramsAdd={paramsAdd}
+          paramsEdit={paramsEdit}
           {...tableProps}
         />
         {footer}
