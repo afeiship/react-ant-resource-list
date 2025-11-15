@@ -28,7 +28,7 @@ export type ReactAntResourceListProps = CardProps & {
   cardExtraProps?: Omit<AcCardExtrasProps, 'name' | 'lang'>;
   tableProps?: Omit<
     AcTableProps,
-    'name' | 'lang' | 'columns' | 'params' | 'paramsAdd' | 'paramsEdit'
+    'name' | 'module' | 'lang' | 'columns' | 'params' | 'paramsAdd' | 'paramsEdit'
   >;
 };
 
@@ -45,8 +45,10 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
   };
 
   get extraView() {
-    const { cardExtraProps, name, lang } = this.props;
-    return <AcCardExtras name={name} lang={lang} {...cardExtraProps} />;
+    const { cardExtraProps = {}, name, lang, hasBack } = this.props;
+    const defaultActions = cardExtraProps.actions || ['add', 'reset'];
+    const actions = hasBack ? [...defaultActions, 'back'] : defaultActions;
+    return <AcCardExtras name={name} lang={lang} {...cardExtraProps} actions={actions} />;
   }
 
   render() {
