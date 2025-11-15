@@ -45,10 +45,10 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
   };
 
   get extraView() {
-    const { cardExtraProps = {}, name, lang, hasBack } = this.props;
-    const defaultActions = cardExtraProps.actions || ['add', 'reset'];
-    const actions = hasBack ? [...defaultActions, 'back'] : defaultActions;
-    return <AcCardExtras name={name} lang={lang} {...cardExtraProps} actions={actions} />;
+    const { cardExtraProps, name, lang, hasBack } = this.props;
+    const { actions } = cardExtraProps ?? {};
+    const _actions = hasBack ? ['back', ...(actions || [])] : actions;
+    return <AcCardExtras name={name} lang={lang} {...cardExtraProps} actions={_actions} />;
   }
 
   render() {
