@@ -13,7 +13,7 @@ declare global {
 
 export type ReactAntResourceListProps = CardProps & {
   name: string;
-  lang?: string;
+  lang?: 'zh-CN' | 'en-US';
   module?: string;
   header?: ReactNode;
   footer?: ReactNode;
