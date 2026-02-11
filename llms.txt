@@ -1,0 +1,583 @@
+# react-ant-resource-list
+> react-ant-resource-list is a comprehensive React component library for building Ant Design-based resource list interfaces. It provides a production-ready solution for creating standardized data management interfaces with built-in CRUD operations, pagination, and action buttons.
+
+All components are written in TypeScript and built on top of Ant Design 5.x and @jswork/antd-components. The library simplifies the creation of resource list pages with consistent UI patterns and reduced boilerplate code.
+
+**Important notes for agents:**
+- react-ant-resource-list wraps AcCard and AcTable from @jswork/antd-components
+- Main component is `ReactAntResourceList` - a class-based component
+- Integrates with `@jswork/next` (nx) for API handling via the `nx.$api` pattern
+- API methods follow naming convention: `{name}_index` (e.g., `posts_index`)
+- Expected API response format: `{ rows: [], total: number }`
+- Built-in action system with add, reset, and back buttons
+- Supports i18n with default language: zh-CN
+- Component is located at `./packages/lib/src/`
+- The library is actively maintained with regular updates
+
+## Documentation
+- [Homepage](https://js.work): Official project homepage
+- [Live Preview](https://afeiship.github.io/react-ant-resource-list/): Interactive component showcase
+- [GitHub Repository](https://github.com/afeiship/react-ant-resource-list): Source code and issues
+- [NPM Package](https://www.npmjs.org/package/@jswork/react-ant-resource-list): Package information
+
+## Key Features
+- **All-in-One Resource List:** Combines Card, Table, and Action buttons in a single component
+- **API Integration:** Seamless integration with nx.$api pattern for data fetching
+- **Built-in Actions:** Pre-configured action buttons (add, reset, back) using AcCardExtras
+- **Pagination Support:** Automatic pagination handling with customizable page sizes
+- **Action Column:** Optional action column for row-level operations (edit, delete)
+- **i18n Ready:** Built-in internationalization support
+- **TypeScript Support:** Full type definitions with exported prop types
+- **Flexible Configuration:** Extensive props for customization
+- **Responsive Design:** Mobile-friendly layout based on Ant Design 5.x
+
+## Installation
+
+### Basic Installation
+```bash
+npm install -S @jswork/react-ant-resource-list
+```
+
+### Dependencies
+The library requires these peer dependencies:
+- `antd` (Ant Design 5.x)
+- `@ant-design/icons`
+- `@jswork/antd-components`
+- `@jswork/next`
+- `classnames`
+- `react`
+- `react-dom`
+
+### Setup
+
+1. **Import Styles:**
+```scss
+// CSS
+@import "~@jswork/react-ant-resource-list/dist/style.css";
+
+// or SCSS
+@import "~@jswork/react-ant-resource-list/dist/style.scss";
+```
+
+2. **Configure API:**
+```js
+import nx from '@jswork/next';
+
+// Set up API endpoints (follows {name}_index convention)
+nx.set(nx, '$api', {
+  posts_index: async (payload) => {
+    // payload contains: { page, size, ...params }
+    const res = await fetch(`/api/posts?page=${payload.page}&limit=${payload.size}`);
+    return {
+      rows: res,      // Array of data items
+      total: 16,     // Total count for pagination
+    };
+  },
+});
+```
+
+3. **Import and Use Component:**
+```tsx
+import ReactAntResourceList from '@jswork/react-ant-resource-list';
+import '@jswork/react-ant-resource-list/dist/style.scss';
+
+function App() {
+  const columns = [
+    { title: 'ID', dataIndex: 'id', width: 80 },
+    { title: 'Title', dataIndex: 'title', width: 200 },
+    { title: 'Content', dataIndex: 'content', width: 200 },
+  ];
+
+  return (
+    <ReactAntResourceList
+      title="文章列表"
+      name="posts"
+      columns={columns}
+    />
+  );
+}
+```
+
+## Component Reference
+
+### `ReactAntResourceList`
+
+The main component that provides a complete resource list interface with card wrapper, table, and action buttons.
+
+#### Basic Usage
+```tsx
+import ReactAntResourceList from '@jswork/react-ant-resource-list';
+
+<ReactAntResourceList
+  title="文章列表"
+  name="posts"
+  columns={[
+    { title: 'ID', dataIndex: 'id', width: 80 },
+    { title: 'Title', dataIndex: 'title', width: 200 },
+  ]}
+/>
+```
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `string` | **required** | Resource identifier (used for API method `{name}_index`) |
+| `columns` | `TableProps['columns']` | `[]` | Table column definitions |
+| `columnsFields` | `TableProps['columns']` | `undefined` | Additional field columns for the table |
+| `columnsAction` | `AcTableProps['columns']` | `undefined` | Action column configuration (edit, delete, etc.) |
+| `columnsActionParams` | `Record<string, any>` | `undefined` | Additional parameters for action column |
+| `title` | `string` | `undefined` | Card title |
+| `lang` | `string` | `'zh-CN'` | Language setting for i18n |
+| `module` | `string` | `'admin'` | Module namespace for API routing |
+| `hasBack` | `boolean` | `false` | Whether to show back button in actions |
+| `header` | `ReactNode` | `undefined` | Custom header content above table |
+| `footer` | `ReactNode` | `undefined` | Custom footer content below table |
+| `params` | `any` | `undefined` | Additional query parameters for API request |
+| `paramsAdd` | `any` | `undefined` | Parameters for add action (used in navigation/form) |
+| `paramsEdit` | `any` | `undefined` | Parameters for edit action (used in navigation/form) |
+| `cardExtraProps` | `Omit<AcCardExtrasProps, 'name' \| 'lang'>` | `{actions: ['add', 'reset']}` | Configuration for card action buttons |
+| `tableProps` | `Omit<AcTableProps, ...>` | `undefined` | Additional props passed to AcTable component |
+| `className` | `string` | `undefined` | Additional CSS class names |
+| ...rest | `CardProps` | `undefined` | Any other props passed to Ant Design Card |
+
+#### Detailed Prop Explanations
+
+**`name`** (required)
+- Resource identifier used to construct API method name
+- API method follows pattern: `{name}_index`
+- Example: `name="posts"` → calls `nx.$api.posts_index(payload)`
+
+**`columns`**
+- Standard Ant Design table column definitions
+- Array of column configuration objects
+- Example:
+```tsx
+columns={[
+  { title: 'ID', dataIndex: 'id', width: 80 },
+  { title: 'Name', dataIndex: 'name', width: 200 },
+  { title: 'Email', dataIndex: 'email', width: 250 },
+]}
+```
+
+**`columnsAction`**
+- Configuration for action column in each row
+- Typically contains edit and delete buttons
+- Example:
+```tsx
+columnsAction={[
+  {
+    title: 'Actions',
+    key: 'actions',
+    render: (_, record) => (
+      <Space>
+        <Button onClick={() => handleEdit(record)}>Edit</Button>
+        <Button onClick={() => handleDelete(record)}>Delete</Button>
+      </Space>
+    ),
+  }
+]}
+```
+
+**`cardExtraProps`**
+- Controls the action buttons displayed in card header
+- Default actions: `['add', 'reset']`
+- Set `hasBack=true` to include back button
+- Example:
+```tsx
+cardExtraProps={{
+  actions: ['add', 'reset'],  // Available actions
+  // Other AcCardExtras props...
+}}
+```
+
+**`tableProps`**
+- Additional props passed to the underlying AcTable component
+- Can override table size, border style, pagination, etc.
+- Example:
+```tsx
+tableProps={{
+  size: 'small',
+  showHeader: true,
+  pagination: { pageSize: 20 },
+}}
+```
+
+**`params`**
+- Additional parameters passed to API request
+- Merged with default `{page, size}` payload
+- Example:
+```tsx
+params={{ status: 'active', category: 'news' }}
+// API receives: { page: 1, size: 10, status: 'active', category: 'news' }
+```
+
+#### Action Buttons
+
+The component includes built-in action buttons:
+- **Add**: Navigates to create page (configured via `paramsAdd`)
+- **Reset**: Refreshes the list data
+- **Back**: Returns to previous page (when `hasBack=true`)
+
+## Usage Examples
+
+### Basic Resource List
+```tsx
+import ReactAntResourceList from '@jswork/react-ant-resource-list';
+import '@jswork/react-ant-resource-list/dist/style.scss';
+import nx from '@jswork/next';
+
+// Setup API
+nx.set(nx, '$api', {
+  posts_index: async (payload) => {
+    const res = await fetch(
+      `https://api.example.com/posts?page=${payload.page}&limit=${payload.size}`
+    ).then(r => r.json());
+    return { rows: res.data, total: res.total };
+  },
+});
+
+function PostList() {
+  const columns = [
+    { title: 'ID', dataIndex: 'id', width: 80 },
+    { title: 'Title', dataIndex: 'title', width: 200 },
+    { title: 'Author', dataIndex: 'author', width: 150 },
+  ];
+
+  return (
+    <ReactAntResourceList
+      title="文章列表"
+      name="posts"
+      columns={columns}
+    />
+  );
+}
+```
+
+### With Custom Actions and Parameters
+```tsx
+function EnhancedPostList() {
+  const columns = [
+    { title: 'ID', dataIndex: 'id', width: 80 },
+    { title: 'Title', dataIndex: 'title', width: 200 },
+  ];
+
+  const columnsAction = [
+    {
+      title: '操作',
+      key: 'actions',
+      render: (_, record) => (
+        <Space>
+          <a onClick={() => navigate(`/posts/edit/${record.id}`)}>Edit</a>
+          <a onClick={() => handleDelete(record.id)}>Delete</a>
+        </Space>
+      ),
+    },
+  ];
+
+  return (
+    <ReactAntResourceList
+      title="文章管理"
+      name="posts"
+      columns={columns}
+      columnsAction={columnsAction}
+      params={{ status: 'published' }}
+      paramsAdd={{ from: 'list' }}
+      paramsEdit={{ mode: 'full' }}
+      hasBack={true}
+      lang="zh-CN"
+    />
+  );
+}
+```
+
+### With Custom Header and Footer
+```tsx
+function CustomPostList() {
+  const columns = [
+    { title: 'ID', dataIndex: 'id' },
+    { title: 'Title', dataIndex: 'title' },
+  ];
+
+  return (
+    <ReactAntResourceList
+      title="文章列表"
+      name="posts"
+      columns={columns}
+      header={
+        <div className="mb-4">
+          <Alert message="Tips: 点击行可查看详情" type="info" />
+        </div>
+      }
+      footer={
+        <div className="mt-4 text-center text-gray-500">
+          Total items loaded from server
+        </div>
+      }
+    />
+  );
+}
+```
+
+### With Multiple Column Types
+```tsx
+function MultiColumnList() {
+  // Basic data columns
+  const columns = [
+    { title: 'ID', dataIndex: 'id', width: 80 },
+    { title: 'Name', dataIndex: 'name', width: 150 },
+  ];
+
+  // Additional field columns
+  const columnsFields = [
+    { title: 'Email', dataIndex: 'email', width: 200 },
+    { title: 'Phone', dataIndex: 'phone', width: 150 },
+  ];
+
+  // Action column
+  const columnsAction = [
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (_, record) => (
+        <Button type="link" onClick={() => console.log(record)}>
+          View
+        </Button>
+      ),
+    },
+  ];
+
+  return (
+    <ReactAntResourceList
+      title="用户列表"
+      name="users"
+      columns={columns}
+      columnsFields={columnsFields}
+      columnsAction={columnsAction}
+      module="admin"
+    />
+  );
+}
+```
+
+### With Custom Table Configuration
+```tsx
+function CustomTableList() {
+  const columns = [
+    { title: 'ID', dataIndex: 'id' },
+    { title: 'Title', dataIndex: 'title' },
+  ];
+
+  return (
+    <ReactAntResourceList
+      title="文章列表"
+      name="posts"
+      columns={columns}
+      tableProps={{
+        size: 'small',
+        bordered: true,
+        showHeader: true,
+        pagination: {
+          pageSize: 20,
+          showSizeChanger: true,
+          showQuickJumper: true,
+        },
+      }}
+    />
+  );
+}
+```
+
+## API Integration Pattern
+
+### Standard API Response Format
+The component expects API responses in this format:
+```typescript
+{
+  rows: Array<any>;   // Data array
+  total: number;      // Total count for pagination
+}
+```
+
+### API Payload Structure
+The component sends this payload to the API:
+```typescript
+{
+  page: number;       // Current page number
+  size: number;       // Page size
+  ...params          // Additional params from props
+}
+```
+
+### Complete API Setup Example
+```typescript
+import nx from '@jswork/next';
+
+interface ApiPayload {
+  page: number;
+  size: number;
+  [key: string]: any;
+}
+
+interface ApiResponse {
+  rows: any[];
+  total: number;
+}
+
+nx.set(nx, '$api', {
+  // List endpoint
+  posts_index: async (payload: ApiPayload): Promise<ApiResponse> => {
+    const { page, size, ...filters } = payload;
+    const params = new URLSearchParams({
+      page: page.toString(),
+      limit: size.toString(),
+      ...filters,
+    });
+
+    const response = await fetch(`/api/posts?${params}`);
+    const data = await response.json();
+
+    return {
+      rows: data.items,
+      total: data.totalCount,
+    };
+  },
+
+  // You can define other CRUD operations too
+  posts_create: async (payload) => { /* ... */ },
+  posts_update: async (payload) => { /* ... */ },
+  posts_delete: async (payload) => { /* ... */ },
+});
+```
+
+## Advanced Usage
+
+### i18n Support
+```tsx
+// Default language is zh-CN
+<ReactAntResourceList name="posts" columns={columns} lang="zh-CN" />
+
+// English (requires proper i18n setup)
+<ReactAntResourceList name="posts" columns={columns} lang="en-US" />
+```
+
+### Module Namespace
+```tsx
+// Default module is 'admin'
+// This affects API routing/naming
+<ReactAntResourceList
+  name="posts"
+  module="admin"
+  columns={columns}
+/>
+
+// Custom module
+<ReactAntResourceList
+  name="posts"
+  module="user"
+  columns={columns}
+/>
+```
+
+### Custom Styling
+```tsx
+// Add custom class name
+<ReactAntResourceList
+  name="posts"
+  columns={columns}
+  className="my-custom-resource-list"
+/>
+
+// CSS
+.my-custom-resource-list {
+  margin: 20px;
+  border-radius: 8px;
+}
+```
+
+## Usage Notes for Agents
+
+### Component Type
+- `ReactAntResourceList` is a **class-based component**
+- Extends React.Component
+- Display name: `'react-ant-resource-list'`
+- Version: dynamically injected via `__VERSION__` at build time
+
+### Naming Convention
+- API methods follow pattern: `{name}_{action}`
+- List endpoint: `{name}_index`
+- Example: `posts_index`, `users_index`, `products_index`
+
+### Import Patterns
+```tsx
+// Default import (recommended)
+import ReactAntResourceList from '@jswork/react-ant-resource-list';
+
+// Import types
+import type { ReactAntResourceListProps } from '@jswork/react-ant-resource-list';
+```
+
+### Component Dependencies
+The component internally uses:
+- `antd` - Card component
+- `@jswork/antd-components` - AcCardExtras, AcTable
+- `classnames` - CSS class manipulation
+- `@jswork/next` - nx utility for API
+
+### State Management
+- Component manages its own internal state for pagination
+- Data fetching is handled via `nx.$api` pattern
+- No external state management required
+
+### Event Handling
+- Action button clicks trigger navigation via `nx.$event`
+- Pagination changes trigger data refetch
+- Row actions (edit/delete) are configured via `columnsAction`
+
+### Development
+```bash
+# Install dependencies
+npm install
+
+# Build library
+npm run build
+
+# Run example
+npm run dev:example
+
+# Publish release
+npm run release
+```
+
+### Monorepo Structure
+```
+react-ant-resource-list/
+├── packages/
+│   ├── lib/          # Main library package
+│   └── example/      # Demo/example application
+├── lerna.json        # Lerna configuration
+└── package.json      # Root workspace
+```
+
+## Common Patterns
+
+### CRUD Operation Flow
+1. **List**: Component automatically calls `{name}_index` on mount
+2. **Add**: Click "Add" button → navigate to create page (uses `paramsAdd`)
+3. **Edit**: Click edit in row → navigate to edit page (uses `paramsEdit`)
+4. **Delete**: Click delete in row → handle via `columnsAction`
+
+### Pagination Flow
+1. User changes page/pageSize
+2. Component sends new payload with updated `{page, size}`
+3. API returns data for that page
+4. Table updates with new data
+
+### Search/Filter Flow
+1. User filters data (via separate search form)
+2. Update `params` prop with filter criteria
+3. Component sends new payload including filters
+4. API returns filtered results
+
+## License
+MIT License - See [LICENSE.txt](https://github.com/afeiship/react-ant-resource-list/blob/master/LICENSE.txt) for details.
