@@ -38,7 +38,7 @@ export default class ReactAntResourceList extends Component<ReactAntResourceList
   static displayName = CLASS_NAME;
   static version = '__VERSION__';
   static defaultProps = {
-    lang: 'zh-CN',
+    lang: 'zh-CN' as const,
     columns: [],
     module: 'admin',
     cardExtraProps: {
