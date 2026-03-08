@@ -11,9 +11,11 @@ declare global {
   }
 }
 
+export type AppLocale = 'zh-CN' | 'en-US';
+
 export type ReactAntResourceListProps = CardProps & {
   name: string;
-  lang?: 'zh-CN' | 'en-US';
+  lang?: AppLocale
   module?: string;
   header?: ReactNode;
   footer?: ReactNode;
